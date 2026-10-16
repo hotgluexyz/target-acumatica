@@ -3,6 +3,10 @@
 
 from __future__ import annotations
 
+import json
+from datetime import datetime
+from functools import cache
+from pathlib import Path
 from typing import Any, ClassVar
 
 import requests
@@ -24,28 +28,113 @@ _UNWRAPPED_KEYS = {
 }
 
 
-def _wrap_field(value: Any) -> Any:
+_DATE_ONLY_REF = "#/components/schemas/DateOnlyValue"
+
+
+@cache
+def _openapi_schemas() -> dict[str, Any]:
+    path = Path(__file__).with_name("acumatica-openapi.json")
+    document = json.loads(path.read_text())
+    return document["components"]["schemas"]
+
+
+def _ref_name(schema: dict | None) -> str | None:
+    if not schema:
+        return None
+    ref = schema.get("$ref")
+    if isinstance(ref, str):
+        return ref.rsplit("/", 1)[-1]
+    for option in schema.get("anyOf", []):
+        name = _ref_name(option)
+        if name:
+            return name
+    return None
+
+
+@cache
+def _schema_properties(name: str) -> dict[str, Any] | None:
+    """Return the OpenAPI properties for an entity, or None when it is not in the schema."""
+    schema = _openapi_schemas().get(name)
+    if schema is None:
+        return None
+    properties: dict[str, Any] = {}
+    for part in schema.get("allOf", []):
+        ref_name = _ref_name(part)
+        if ref_name:
+            nested = _schema_properties(ref_name)
+            if nested:
+                properties.update(nested)
+        properties.update(part.get("properties", {}))
+    properties.update(schema.get("properties", {}))
+    return properties
+
+
+def _is_date_only(field_schema: dict | None) -> bool:
+    return bool(field_schema) and field_schema.get("$ref") == _DATE_ONLY_REF
+
+
+def _as_date(value: Any) -> Any:
+    """Return the date portion of a date-only Acumatica field."""
+    if isinstance(value, datetime):
+        return value.date().isoformat()
+    if isinstance(value, str) and "T" in value:
+        return value.split("T", 1)[0]
+    return value
+
+
+def _is_scalar_object(value: dict) -> bool:
+    if set(value) <= {"value", "error"}:
+        return True
+    return set(value) <= {"id", "description"} and "id" in value
+
+
+def _wrap_list(value: list, field_schema: dict | None) -> list:
+    nested_name = _ref_name((field_schema or {}).get("items"))
+    nested_properties = _schema_properties(nested_name) if nested_name else None
+    converted = []
+    for item in value:
+        if isinstance(item, dict) and not _is_scalar_object(item):
+            item_value = _to_acumatica_entity(item, nested_properties)
+        else:
+            item_value = _wrap_field(item, field_schema)
+        if item_value is not None and item_value != {}:
+            converted.append(item_value)
+    return converted
+
+
+def _wrap_value_object(value: dict, field_schema: dict | None) -> dict | None:
+    if value.get("value") is None and "error" not in value:
+        return None
+    if not _is_date_only(field_schema):
+        return value
+    temporal = _as_date(value.get("value"))
+    if temporal == value.get("value"):
+        return value
+    return {**value, "value": temporal}
+
+
+def _wrap_field(value: Any, field_schema: dict | None = None) -> Any:
     """Return an Acumatica field, or None when the value should be omitted."""
     if value is None:
         converted = None
     elif isinstance(value, list):
-        converted = []
-        for item in value:
-            item_value = _wrap_field(item)
-            if item_value is not None and item_value != {}:
-                converted.append(item_value)
+        converted = _wrap_list(value, field_schema)
     elif isinstance(value, dict) and set(value) <= {"value", "error"}:
-        converted = None if value.get("value") is None and "error" not in value else value
+        converted = _wrap_value_object(value, field_schema)
     elif isinstance(value, dict) and set(value) <= {"id", "description"} and "id" in value:
         converted = {"value": value}
     elif isinstance(value, dict):
-        converted = _to_acumatica_entity(value)
+        nested_name = _ref_name(field_schema)
+        nested_properties = _schema_properties(nested_name) if nested_name else None
+        converted = _to_acumatica_entity(value, nested_properties)
+    elif _is_date_only(field_schema):
+        converted = {"value": _as_date(value)}
     else:
         converted = {"value": value}
     return converted
 
 
-def _to_acumatica_entity(record: dict) -> dict:
+def _to_acumatica_entity(record: dict, properties: dict[str, Any] | None = None) -> dict:
     """Wrap plain record fields into Acumatica ``{"value": ...}`` objects."""
     wrapped: dict[str, Any] = {}
     for key, value in record.items():
@@ -53,7 +142,8 @@ def _to_acumatica_entity(record: dict) -> dict:
             if value is not None:
                 wrapped[key] = value
             continue
-        converted = _wrap_field(value)
+        field_schema = properties.get(key) if properties else None
+        converted = _wrap_field(value, field_schema)
         if converted is not None:
             wrapped[key] = converted
     return wrapped
@@ -103,7 +193,7 @@ class AcumaticaRecordSink(AcumaticaSink, HotglueSink):
     name = "AcumaticaRecordSink"
 
     def preprocess_record(self, record: dict, _context: dict) -> dict:
-        return _to_acumatica_entity(record)
+        return _to_acumatica_entity(record, _schema_properties(self.name))
 
     def upsert_record(self, record: dict, _context: dict) -> tuple[str | None, bool, dict]:
         """Create with PUT. PATCH when ``id`` is set so only the sent fields change."""

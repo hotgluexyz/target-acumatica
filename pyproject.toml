@@ -74,6 +74,11 @@ commands = [
     ["ruff", "format", "--check", "target_acumatica", "tests"],
 ]
 
+[tool.poetry]
+include = [
+    { path = "target_acumatica/acumatica-openapi.json", format = ["sdist", "wheel"] },
+]
+
 [build-system]
 requires = ["poetry-core>=1.0.8"]
 build-backend = "poetry.core.masonry.api"

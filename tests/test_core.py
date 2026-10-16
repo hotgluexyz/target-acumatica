@@ -10,7 +10,6 @@ from hotglue_singer_sdk.testing import get_target_test_class
 
 from target_acumatica.target import TargetAcumatica
 
-
 SAMPLE_CONFIG: dict[str, Any] = {}
 
 
@@ -35,5 +34,3 @@ class TestTargetAcumatica(StandardTargetTests):  # type: ignore[misc, valid-type
         https://github.com/hotgluexyz/HotglueSingerSDK
         """
         return "resource"
-
-

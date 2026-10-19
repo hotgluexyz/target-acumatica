@@ -201,7 +201,7 @@ class AcumaticaRecordSink(AcumaticaSink, HotglueSink):
         method = "PUT"
         if record.get("id"):
             method = "PATCH"
-            state_updates["updated"] = True
+            state_updates["is_updated"] = True
         # Acumatica ignores detail collections in the body unless they are named here.
         expand = [name for name, value in record.items() if isinstance(value, list)]
         params = {"$expand": ",".join(expand)} if expand else {}

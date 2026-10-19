@@ -1,6 +1,10 @@
 # Secrets and internal config files
 config.json
 .secrets/
+# Scrubbed smoke-test configs are placeholders and must be committed.
+!__smoke-tests__/**/config.json
+__smoke-tests__/**/test_runtime/
+__smoke-tests__/unsanitized_*_test/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

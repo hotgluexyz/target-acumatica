@@ -41,7 +41,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 19 Oct 2026 12:48:50 GMT
+      - Tue, 20 Oct 2026 20:08:22 GMT
       Vary:
       - Accept-Encoding
       X-Robots-Tag:
@@ -70,15 +70,15 @@ interactions:
     uri: http://54.174.197.202/AcumaticaSandbox/identity/connect/token
   response:
     body:
-      string: '{"access_token": "lV-***", "expires_in": 3600, "token_type": "-Fallback-scrubbed-ELUFxS",
-        "refresh_token": "bwG***", "scope": "-Fallback-scrubbed-nIuMzCquRMaTTZsfoW"}'
+      string: '{"access_token": "Ihb***", "expires_in": 3600, "token_type": "-Fallback-scrubbed-ELUFxS",
+        "refresh_token": "KfD***", "scope": "-Fallback-scrubbed-nIuMzCquRMaTTZsfoW"}'
     headers:
       Cache-Control:
       - no-cache, no-store
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Mon, 19 Oct 2026 12:48:50 GMT
+      - Tue, 20 Oct 2026 20:08:22 GMT
       Expires:
       - '-1'
       Pragma:
@@ -89,6 +89,79 @@ interactions:
       - noindex
       content-length:
       - '193'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.34.2
+    method: GET
+    uri: http://54.174.197.202/AcumaticaSandbox/entity/Default/26.200.001/Bill/38a0c95e-bbcb-f111-bb84-0afff321670d?%24expand=Details
+  response:
+    body:
+      string: '{"id": "38a0c95e-bbcb-f111-bb84-0afff321670d", "rowNumber": 1, "note":
+        {"value": "-Fallback-scrubbed-NcSkTpnNVEQ"}, "Amount": {"value": 140.0}, "ApprovedForPayment":
+        {"value": true}, "Balance": {"value": 140.0}, "BranchID": {"value": "-Fallback-scrubbed-EumWxqrhT"},
+        "CashAccount": {"value": "10200"}, "CurrencyID": {"value": "USD"}, "Date":
+        {"value": "2026-10-16"}, "Description": {"value": "-Fallback-scrubbed-HqTHqAhTFkbzUJQscLSPNEIC"},
+        "Details": [{"id": "3aa0c95e-bbcb-f111-bb84-0afff321670d", "rowNumber": 1,
+        "note": {"value": "-Fallback-scrubbed-hPPIImsny"}, "Account": {"value": "62400"},
+        "Amount": {"value": 40.0}, "Branch": {"value": "-Fallback-scrubbed-EumWxqrhT"},
+        "CalculateDiscountsOnImport": {}, "Description": {"value": "-Fallback-scrubbed-EcAjRHfOsOdHwk"},
+        "ExtendedCost": {"value": 40.0}, "InventoryID": {"value": "-Fallback-scrubbed-KvWDVEBzcG"},
+        "LCLineNbr": {}, "LCNbr": {}, "LCType": {}, "NonBillable": {"value": false},
+        "POLine": {}, "POOrderNbr": {}, "POOrderType": {}, "POReceiptLine": {}, "POReceiptNbr":
+        {}, "POReceiptType": {}, "Project": {"value": "X"}, "ProjectTask": {}, "Qty":
+        {"value": 2.0}, "Subaccount": {"value": "000000"}, "TaxCategory": {"value":
+        "-Fallback-scrubbed-QRseFQ"}, "TransactionDescription": {"value": "-Fallback-scrubbed-ufSmYztGtnJOLUBjA"},
+        "UnitCost": {"value": 20.0}, "UOM": {"value": "-Fallback-scrubbed-li"}, "custom":
+        {}, "_links": {"files:put": "-Fallback-scrubbed-rAGdFOwpxRHIexsfjLDtVuwcDxfdQNvIBCvTBsxBtkLePYgRXynBWaeYMvXhYTqslGudNSShxcieqvtSIfldpcNbqSBJQGhyyunzIUMPpjxZubwwwBigrkhaflZttaDAWMjsWpVMorf"}},
+        {"id": "a5cda9ff-afcc-f111-bb84-0afff321670d", "rowNumber": 2, "note": null,
+        "Account": {"value": "50000"}, "Amount": {"value": 100.0}, "Branch": {"value":
+        "-Fallback-scrubbed-EumWxqrhT"}, "CalculateDiscountsOnImport": {}, "Description":
+        {"value": "-Fallback-scrubbed-txcXaRuBdFXvSdgA"}, "ExtendedCost": {"value":
+        100.0}, "InventoryID": {}, "LCLineNbr": {}, "LCNbr": {}, "LCType": {}, "NonBillable":
+        {"value": false}, "POLine": {}, "POOrderNbr": {}, "POOrderType": {}, "POReceiptLine":
+        {}, "POReceiptNbr": {}, "POReceiptType": {}, "Project": {"value": "-Fallback-scrubbed-rDqGSWBbE"},
+        "ProjectTask": {"value": "01"}, "Qty": {"value": 1.0}, "Subaccount": {"value":
+        "000000"}, "TaxCategory": {}, "TransactionDescription": {"value": "-Fallback-scrubbed-rcFIZJvjSDApyRKW"},
+        "UnitCost": {"value": 100.0}, "UOM": {}, "custom": {}, "_links": {"files:put":
+        "-Fallback-scrubbed-FGPZndeHQGqqpbtsrWPzJXahyVPlhihBNScCpSRgNnKNZSAOvXgpXfKPLOsvjFmFnkKHkNAbJqEhJliEzhbywpjbquvoshUxBCiCkSyBHfcKOfnGHmUQbOjExsDmOBnTIWiKcVBCuNk"}}],
+        "DueDate": {"value": "2026-11-15"}, "Hold": {"value": true}, "IsTaxValid":
+        {}, "LastModifiedDateTime": {"value": "2026-10-20T18:00:11.4+00:00"}, "LocationID":
+        {"value": "-Fallback-scrubbed-pzsj"}, "PostPeriod": {"value": "102026"}, "Project":
+        {}, "ReferenceNbr": {"value": "006577"}, "Status": {"value": {"id": "H", "description":
+        "-Fallback-scrubbed-mrmbqQD"}}, "TaxTotal": {"value": 0.0}, "Terms": {"value":
+        "-Fallback-scrubbed-cCt"}, "Type": {"value": {"id": "INV", "description":
+        "Bill"}}, "Vendor": {"value": "-Fallback-scrubbed-yXoircaC"}, "VendorRef":
+        {"value": "-Fallback-scrubbed-uduiqGPsXZdjLFAMP"}, "custom": {}, "_links":
+        {"files:put": "-Fallback-scrubbed-RCWwndofllOLqtnuCEOWSPQMoMbczHkQaxUkyCqZVVXDPTUwUbwKscJeQCEUngwRwdppLvMCIzDLyrCdWHEODfPVMBYOibafYgdQuldJkddnrvoxxJRCVLKVNBAhORTfbPFCPcJ",
+        "self": "-Fallback-scrubbed-oBqdesWwbRgZEjZSKYkGBBvXOXuexoAHAhjqqfNfRMaYvSbopMglJtWTJviERvvWYBsDunYRlDSIUtticqVFr"}}'
+    headers:
+      Cache-Control:
+      - private
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 20 Oct 2026 20:08:24 GMT
+      SessionId:
+      - a09cedc9-2c3b-4bc9-8564-8b33adbdabbc
+      Vary:
+      - Accept-Encoding
+      X-Robots-Tag:
+      - noindex
+      content-length:
+      - '2873'
     status:
       code: 200
       message: OK
@@ -105,10 +178,11 @@ interactions:
       false}, "Project": {"value": "X"}, "Qty": {"value": 2.0}, "Subaccount": {"value":
       "000000"}, "TaxCategory": {"value": "-Fallback-scrubbed-QRseFQ"}, "TransactionDescription":
       {"value": "-Fallback-scrubbed-ufSmYztGtnJOLUBjA"}, "UnitCost": {"value": 20.0},
-      "UOM": {"value": "-Fallback-scrubbed-li"}}], "DueDate": {"value": "2026-11-15"},
-      "Hold": {"value": true}, "IsTaxValid": {"value": false}, "LocationID": {"value":
-      "-Fallback-scrubbed-pzsj"}, "PostPeriod": {"value": "102026"}, "Project": {"value":
-      "X"}, "Terms": {"value": "-Fallback-scrubbed-cCt"}, "Vendor": {"value": "-Fallback-scrubbed-yXoircaC"}}'
+      "UOM": {"value": "-Fallback-scrubbed-li"}, "id": "3aa0c95e-bbcb-f111-bb84-0afff321670d"}],
+      "DueDate": {"value": "2026-11-15"}, "Hold": {"value": true}, "IsTaxValid": {"value":
+      false}, "LocationID": {"value": "-Fallback-scrubbed-pzsj"}, "PostPeriod": {"value":
+      "102026"}, "Project": {"value": "X"}, "Terms": {"value": "-Fallback-scrubbed-cCt"},
+      "Vendor": {"value": "-Fallback-scrubbed-yXoircaC"}}'
     headers:
       Accept:
       - '*/*'
@@ -117,7 +191,7 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '1385'
+      - '1431'
       Content-Type:
       - application/json
       User-Agent:
@@ -127,8 +201,8 @@ interactions:
   response:
     body:
       string: '{"id": "38a0c95e-bbcb-f111-bb84-0afff321670d", "rowNumber": 1, "note":
-        {"value": "-Fallback-scrubbed-NcSkTpnNVEQ"}, "Amount": {"value": 80.0}, "ApprovedForPayment":
-        {"value": true}, "Balance": {"value": 80.0}, "BranchID": {"value": "-Fallback-scrubbed-EumWxqrhT"},
+        {"value": "-Fallback-scrubbed-NcSkTpnNVEQ"}, "Amount": {"value": 140.0}, "ApprovedForPayment":
+        {"value": true}, "Balance": {"value": 140.0}, "BranchID": {"value": "-Fallback-scrubbed-EumWxqrhT"},
         "CashAccount": {"value": "10200"}, "CurrencyID": {"value": "USD"}, "Date":
         {"value": "2026-10-16"}, "Description": {"value": "-Fallback-scrubbed-HqTHqAhTFkbzUJQscLSPNEIC"},
         "Details": [{"id": "3aa0c95e-bbcb-f111-bb84-0afff321670d", "rowNumber": 1,
@@ -143,27 +217,27 @@ interactions:
         "-Fallback-scrubbed-QRseFQ"}, "TransactionDescription": {"value": "-Fallback-scrubbed-ufSmYztGtnJOLUBjA"},
         "UnitCost": {"value": 20.0}, "UOM": {"value": "-Fallback-scrubbed-li"}, "custom":
         {}, "_links": {"files:put": "-Fallback-scrubbed-rAGdFOwpxRHIexsfjLDtVuwcDxfdQNvIBCvTBsxBtkLePYgRXynBWaeYMvXhYTqslGudNSShxcieqvtSIfldpcNbqSBJQGhyyunzIUMPpjxZubwwwBigrkhaflZttaDAWMjsWpVMorf"}},
-        {"id": "d35f2d6e-bbcb-f111-bb84-0afff321670d", "rowNumber": 2, "note": {"value":
-        "-Fallback-scrubbed-hPPIImsny"}, "Account": {}, "Amount": {"value": 40.0},
-        "Branch": {"value": "-Fallback-scrubbed-EumWxqrhT"}, "CalculateDiscountsOnImport":
-        {}, "Description": {}, "ExtendedCost": {"value": 40.0}, "InventoryID": {"value":
-        "-Fallback-scrubbed-KvWDVEBzcG"}, "LCLineNbr": {}, "LCNbr": {}, "LCType":
+        {"id": "a5cda9ff-afcc-f111-bb84-0afff321670d", "rowNumber": 2, "note": {"value":
+        ""}, "Account": {"value": "50000"}, "Amount": {"value": 100.0}, "Branch":
+        {"value": "-Fallback-scrubbed-EumWxqrhT"}, "CalculateDiscountsOnImport": {},
+        "Description": {"value": "-Fallback-scrubbed-txcXaRuBdFXvSdgA"}, "ExtendedCost":
+        {"value": 100.0}, "InventoryID": {}, "LCLineNbr": {}, "LCNbr": {}, "LCType":
         {}, "NonBillable": {"value": false}, "POLine": {}, "POOrderNbr": {}, "POOrderType":
         {}, "POReceiptLine": {}, "POReceiptNbr": {}, "POReceiptType": {}, "Project":
-        {"value": "X"}, "ProjectTask": {}, "Qty": {"value": 2.0}, "Subaccount": {},
-        "TaxCategory": {"value": "-Fallback-scrubbed-QRseFQ"}, "TransactionDescription":
-        {"value": "-Fallback-scrubbed-ufSmYztGtnJOLUBjA"}, "UnitCost": {"value": 20.0},
-        "UOM": {"value": "-Fallback-scrubbed-li"}, "custom": {}, "_links": {"files:put":
-        "-Fallback-scrubbed-gwvdlvOowWuIaWplBfYLLfJuYUAqLrVJJbQXEEnoOGYTBErHlWNaZiGbDuRkCqSypktIPEIdBsXJDDLAcIigSJTjdekpJdeKRoPXZXnXmhOxkxUpgxLFbMKJnlilZcWDNAroEbqPtLy"}}],
+        {"value": "-Fallback-scrubbed-rDqGSWBbE"}, "ProjectTask": {"value": "01"},
+        "Qty": {"value": 1.0}, "Subaccount": {"value": "000000"}, "TaxCategory": {},
+        "TransactionDescription": {"value": "-Fallback-scrubbed-rcFIZJvjSDApyRKW"},
+        "UnitCost": {"value": 100.0}, "UOM": {}, "custom": {}, "_links": {"files:put":
+        "-Fallback-scrubbed-FGPZndeHQGqqpbtsrWPzJXahyVPlhihBNScCpSRgNnKNZSAOvXgpXfKPLOsvjFmFnkKHkNAbJqEhJliEzhbywpjbquvoshUxBCiCkSyBHfcKOfnGHmUQbOjExsDmOBnTIWiKcVBCuNk"}}],
         "DueDate": {"value": "2026-11-15"}, "Hold": {"value": true}, "IsTaxValid":
-        {"value": false}, "LastModifiedDateTime": {"value": "2026-10-19T12:48:52.507+00:00"},
+        {"value": false}, "LastModifiedDateTime": {"value": "2026-10-20T20:08:25.887+00:00"},
         "LocationID": {"value": "-Fallback-scrubbed-pzsj"}, "PostPeriod": {"value":
-        "102026"}, "Project": {"value": "X"}, "ReferenceNbr": {"value": "006577"},
-        "Status": {"value": {"id": "H", "description": "-Fallback-scrubbed-mrmbqQD"}},
-        "TaxTotal": {"value": 0.0}, "Terms": {"value": "-Fallback-scrubbed-cCt"},
-        "Type": {"value": {"id": "INV", "description": "Bill"}}, "Vendor": {"value":
-        "-Fallback-scrubbed-yXoircaC"}, "VendorRef": {"value": "-Fallback-scrubbed-uduiqGPsXZdjLFAMP"},
-        "custom": {}, "_links": {"files:put": "-Fallback-scrubbed-RCWwndofllOLqtnuCEOWSPQMoMbczHkQaxUkyCqZVVXDPTUwUbwKscJeQCEUngwRwdppLvMCIzDLyrCdWHEODfPVMBYOibafYgdQuldJkddnrvoxxJRCVLKVNBAhORTfbPFCPcJ",
+        "102026"}, "Project": {}, "ReferenceNbr": {"value": "006577"}, "Status": {"value":
+        {"id": "H", "description": "-Fallback-scrubbed-mrmbqQD"}}, "TaxTotal": {"value":
+        0.0}, "Terms": {"value": "-Fallback-scrubbed-cCt"}, "Type": {"value": {"id":
+        "INV", "description": "Bill"}}, "Vendor": {"value": "-Fallback-scrubbed-yXoircaC"},
+        "VendorRef": {"value": "-Fallback-scrubbed-uduiqGPsXZdjLFAMP"}, "custom":
+        {}, "_links": {"files:put": "-Fallback-scrubbed-RCWwndofllOLqtnuCEOWSPQMoMbczHkQaxUkyCqZVVXDPTUwUbwKscJeQCEUngwRwdppLvMCIzDLyrCdWHEODfPVMBYOibafYgdQuldJkddnrvoxxJRCVLKVNBAhORTfbPFCPcJ",
         "self": "-Fallback-scrubbed-oBqdesWwbRgZEjZSKYkGBBvXOXuexoAHAhjqqfNfRMaYvSbopMglJtWTJviERvvWYBsDunYRlDSIUtticqVFr"}}'
     headers:
       Cache-Control:
@@ -171,15 +245,15 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 19 Oct 2026 12:48:52 GMT
+      - Tue, 20 Oct 2026 20:08:26 GMT
       SessionId:
-      - f8639378-33b9-43e6-a90f-76931dfc9895
+      - a09cedc9-2c3b-4bc9-8564-8b33adbdabbc
       Vary:
       - Accept-Encoding
       X-Robots-Tag:
       - noindex
       content-length:
-      - '2879'
+      - '2894'
     status:
       code: 200
       message: OK

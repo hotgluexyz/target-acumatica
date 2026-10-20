@@ -10,14 +10,14 @@ from hotglue_singer_sdk.target_sdk.target import TargetHotglue
 
 from target_acumatica.auth import AcumaticaAuthenticator
 from target_acumatica.client import fetch_default_endpoint_version, instance_url
-from target_acumatica.sinks import FallbackSink
+from target_acumatica.sinks import BillSink, FallbackSink
 
 
 class TargetAcumatica(TargetHotglue):
     """Target for Acumatica."""
 
     name = "target-acumatica"
-    SINK_TYPES = []
+    SINK_TYPES = [BillSink]
 
     config_jsonschema = th.PropertiesList(
         th.Property(

@@ -25,7 +25,7 @@ def _lines_match(payload_line: dict, existing_line: dict) -> bool:
 
 
 class BillSink(AcumaticaRecordSink):
-    """Bill sink. On update, copy existing detail ids onto matching lines."""
+    """Bill sink. On update, drop Type and copy existing detail ids onto matching lines."""
 
     name = "Bill"
 
@@ -34,8 +34,10 @@ class BillSink(AcumaticaRecordSink):
         return "/Bill"
 
     def upsert_record(self, record: dict, context: dict) -> tuple[str | None, bool, dict]:
-        if record.get("id") and record.get("Details"):
-            self._set_detail_ids(record)
+        if record.get("id"):
+            record.pop("Type", None)
+            if record.get("Details"):
+                self._set_detail_ids(record)
         return super().upsert_record(record, context)
 
     def _set_detail_ids(self, record: dict) -> None:

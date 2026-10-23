@@ -1,0 +1,260 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.34.2
+    method: GET
+    uri: http://54.174.197.202/AcumaticaSandbox/entity
+  response:
+    body:
+      string: '{"version": {"acumaticaBuildVersion": "-Fallback-scrubbed-SYFBuzNmLlq",
+        "databaseVersion": "-Fallback-scrubbed-SYFBuzNmLlq"}, "endpoints": [{"name":
+        "Default", "version": "20.200.001", "href": "-Fallback-scrubbed-FPgOwtDnKSEIEnuCtkPutPbbBATKgtMLhkeEPXkOvsiL"},
+        {"name": "Fake-Emily Hamilton", "version": "20.200.001", "href": "-Fallback-scrubbed-dbHkHSdcLvvBgkDAhbZKDXWQwVYEjxouFXrFsaIIBvpBWs"},
+        {"name": "Default", "version": "22.200.001", "href": "-Fallback-scrubbed-KRQgRZfMtRIizePrrXCronSKpSPKvyzfGLLftveLyYQO"},
+        {"name": "Fake-Emily Hamilton", "version": "22.200.001", "href": "-Fallback-scrubbed-XPvCQNnPwYBFdVXxnnMyTOIHNxNklEaJpsKHsWeilZgWUa"},
+        {"name": "Fake-Tyler Porter", "version": "22.200.001", "href": "-Fallback-scrubbed-QyNJGzWSsHSBRanftgxmhcqsecFcfdvYFHdLeXLlBONZSXBsfOhT"},
+        {"name": "Default", "version": "23.200.001", "href": "-Fallback-scrubbed-dzmsLgnHzPyXxtJthhdezmzeSKrRDMNOHXjcKIhxvDLh"},
+        {"name": "Fake-James Goodwin", "version": "23.200.001", "href": "-Fallback-scrubbed-EqWXAtrhWsHpYVkIPWNdGSzQluuycScakofSposOdLGkAu"},
+        {"name": "Fake-Emily Hamilton", "version": "23.200.001", "href": "-Fallback-scrubbed-KySdakQBXvUqjKEHGbivGVNcEDbNaXmsGXkjhGUIJHYNad"},
+        {"name": "Fake-Amanda Garcia", "version": "23.200.001", "href": "-Fallback-scrubbed-GtROcJWoWaTQgsEqQUuqFQSVBwFjcUieIGroxihnnKlEXxgTFb"},
+        {"name": "Default", "version": "24.200.001", "href": "-Fallback-scrubbed-jQmPSjnmJWXulebZiruSapLkFmwqgXWdDSAFHsmBUZfI"},
+        {"name": "Fake-Emily Hamilton", "version": "24.200.001", "href": "-Fallback-scrubbed-iwNCYPZcfslnLBAnGJRRIqdXvdTtjUIhulnYucJmILDdnH"},
+        {"name": "Fake-Amanda Garcia", "version": "24.200.001", "href": "-Fallback-scrubbed-FDVCCtoTNPyLdYdonGFmWTfUQomneRFgwbaVSkMubnRtsQTsDy"},
+        {"name": "Fake-Amanda Garcia", "version": "25.100.001", "href": "-Fallback-scrubbed-HSYaeOMVrVVGmEAYfNdOaqfRFATGteUqVznKyjhkERdaaIAlxs"},
+        {"name": "Default", "version": "25.200.001", "href": "-Fallback-scrubbed-lAvnWrIjNMSNBpvvwoTKTXsQyHkODCXFezhhHqasLgnx"},
+        {"name": "Fake-James Goodwin", "version": "26.100.001", "href": "-Fallback-scrubbed-vRFogSOyaMxZRSroyugFvzczjSQnpNOzAYJrwJfvcBDJgx"},
+        {"name": "Fake-Michael Mccarthy", "version": "26.200.001", "href": "-Fallback-scrubbed-dkzaycCMGxUZroeTmZbcRIzBWTckmcbEYTETlVxsHlebvvzndVNHgKlBH"},
+        {"name": "Default", "version": "26.200.001", "href": "-Fallback-scrubbed-ZvWnWjFbCswfNhwbiChZRaJqSPdfciUhYvSQTTZhjgqK"},
+        {"name": "Fake-Emily Hamilton", "version": "26.200.001", "href": "-Fallback-scrubbed-TstzGnYBPwJRQhtufHcGfBTREWYcnmgOUXFqlpAXpQwhFV"},
+        {"name": "Fake-Amanda Garcia", "version": "26.200.001", "href": "-Fallback-scrubbed-yyXVNQDTVuMPXYItYwgbhXfDZeXEWnlydGPIeoVkvXjfPkMUKH"}]}'
+    headers:
+      Cache-Control:
+      - private
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 20 Oct 2026 20:08:22 GMT
+      Vary:
+      - Accept-Encoding
+      X-Robots-Tag:
+      - noindex
+      content-length:
+      - '2039'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: grant_type=refresh_token
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '24'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - python-requests/2.34.2
+    method: POST
+    uri: http://54.174.197.202/AcumaticaSandbox/identity/connect/token
+  response:
+    body:
+      string: '{"access_token": "Ihb***", "expires_in": 3600, "token_type": "-Fallback-scrubbed-ELUFxS",
+        "refresh_token": "KfD***", "scope": "-Fallback-scrubbed-nIuMzCquRMaTTZsfoW"}'
+    headers:
+      Cache-Control:
+      - no-cache, no-store
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 20 Oct 2026 20:08:22 GMT
+      Expires:
+      - '-1'
+      Pragma:
+      - no-cache
+      Vary:
+      - Accept-Encoding
+      X-Robots-Tag:
+      - noindex
+      content-length:
+      - '193'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.34.2
+    method: GET
+    uri: http://54.174.197.202/AcumaticaSandbox/entity/Default/26.200.001/Bill/38a0c95e-bbcb-f111-bb84-0afff321670d?%24expand=Details
+  response:
+    body:
+      string: '{"id": "38a0c95e-bbcb-f111-bb84-0afff321670d", "rowNumber": 1, "note":
+        {"value": "-Fallback-scrubbed-NcSkTpnNVEQ"}, "Amount": {"value": 140.0}, "ApprovedForPayment":
+        {"value": true}, "Balance": {"value": 140.0}, "BranchID": {"value": "-Fallback-scrubbed-EumWxqrhT"},
+        "CashAccount": {"value": "10200"}, "CurrencyID": {"value": "USD"}, "Date":
+        {"value": "2026-10-16"}, "Description": {"value": "-Fallback-scrubbed-HqTHqAhTFkbzUJQscLSPNEIC"},
+        "Details": [{"id": "3aa0c95e-bbcb-f111-bb84-0afff321670d", "rowNumber": 1,
+        "note": {"value": "-Fallback-scrubbed-hPPIImsny"}, "Account": {"value": "62400"},
+        "Amount": {"value": 40.0}, "Branch": {"value": "-Fallback-scrubbed-EumWxqrhT"},
+        "CalculateDiscountsOnImport": {}, "Description": {"value": "-Fallback-scrubbed-EcAjRHfOsOdHwk"},
+        "ExtendedCost": {"value": 40.0}, "InventoryID": {"value": "-Fallback-scrubbed-KvWDVEBzcG"},
+        "LCLineNbr": {}, "LCNbr": {}, "LCType": {}, "NonBillable": {"value": false},
+        "POLine": {}, "POOrderNbr": {}, "POOrderType": {}, "POReceiptLine": {}, "POReceiptNbr":
+        {}, "POReceiptType": {}, "Project": {"value": "X"}, "ProjectTask": {}, "Qty":
+        {"value": 2.0}, "Subaccount": {"value": "000000"}, "TaxCategory": {"value":
+        "-Fallback-scrubbed-QRseFQ"}, "TransactionDescription": {"value": "-Fallback-scrubbed-ufSmYztGtnJOLUBjA"},
+        "UnitCost": {"value": 20.0}, "UOM": {"value": "-Fallback-scrubbed-li"}, "custom":
+        {}, "_links": {"files:put": "-Fallback-scrubbed-rAGdFOwpxRHIexsfjLDtVuwcDxfdQNvIBCvTBsxBtkLePYgRXynBWaeYMvXhYTqslGudNSShxcieqvtSIfldpcNbqSBJQGhyyunzIUMPpjxZubwwwBigrkhaflZttaDAWMjsWpVMorf"}},
+        {"id": "a5cda9ff-afcc-f111-bb84-0afff321670d", "rowNumber": 2, "note": null,
+        "Account": {"value": "50000"}, "Amount": {"value": 100.0}, "Branch": {"value":
+        "-Fallback-scrubbed-EumWxqrhT"}, "CalculateDiscountsOnImport": {}, "Description":
+        {"value": "-Fallback-scrubbed-txcXaRuBdFXvSdgA"}, "ExtendedCost": {"value":
+        100.0}, "InventoryID": {}, "LCLineNbr": {}, "LCNbr": {}, "LCType": {}, "NonBillable":
+        {"value": false}, "POLine": {}, "POOrderNbr": {}, "POOrderType": {}, "POReceiptLine":
+        {}, "POReceiptNbr": {}, "POReceiptType": {}, "Project": {"value": "-Fallback-scrubbed-rDqGSWBbE"},
+        "ProjectTask": {"value": "01"}, "Qty": {"value": 1.0}, "Subaccount": {"value":
+        "000000"}, "TaxCategory": {}, "TransactionDescription": {"value": "-Fallback-scrubbed-rcFIZJvjSDApyRKW"},
+        "UnitCost": {"value": 100.0}, "UOM": {}, "custom": {}, "_links": {"files:put":
+        "-Fallback-scrubbed-FGPZndeHQGqqpbtsrWPzJXahyVPlhihBNScCpSRgNnKNZSAOvXgpXfKPLOsvjFmFnkKHkNAbJqEhJliEzhbywpjbquvoshUxBCiCkSyBHfcKOfnGHmUQbOjExsDmOBnTIWiKcVBCuNk"}}],
+        "DueDate": {"value": "2026-11-15"}, "Hold": {"value": true}, "IsTaxValid":
+        {}, "LastModifiedDateTime": {"value": "2026-10-20T18:00:11.4+00:00"}, "LocationID":
+        {"value": "-Fallback-scrubbed-pzsj"}, "PostPeriod": {"value": "102026"}, "Project":
+        {}, "ReferenceNbr": {"value": "006577"}, "Status": {"value": {"id": "H", "description":
+        "-Fallback-scrubbed-mrmbqQD"}}, "TaxTotal": {"value": 0.0}, "Terms": {"value":
+        "-Fallback-scrubbed-cCt"}, "Type": {"value": {"id": "INV", "description":
+        "Bill"}}, "Vendor": {"value": "-Fallback-scrubbed-yXoircaC"}, "VendorRef":
+        {"value": "-Fallback-scrubbed-uduiqGPsXZdjLFAMP"}, "custom": {}, "_links":
+        {"files:put": "-Fallback-scrubbed-RCWwndofllOLqtnuCEOWSPQMoMbczHkQaxUkyCqZVVXDPTUwUbwKscJeQCEUngwRwdppLvMCIzDLyrCdWHEODfPVMBYOibafYgdQuldJkddnrvoxxJRCVLKVNBAhORTfbPFCPcJ",
+        "self": "-Fallback-scrubbed-oBqdesWwbRgZEjZSKYkGBBvXOXuexoAHAhjqqfNfRMaYvSbopMglJtWTJviERvvWYBsDunYRlDSIUtticqVFr"}}'
+    headers:
+      Cache-Control:
+      - private
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 20 Oct 2026 20:08:24 GMT
+      SessionId:
+      - a09cedc9-2c3b-4bc9-8564-8b33adbdabbc
+      Vary:
+      - Accept-Encoding
+      X-Robots-Tag:
+      - noindex
+      content-length:
+      - '2873'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"id": "38a0c95e-bbcb-f111-bb84-0afff321670d", "VendorRef": {"value": "-Fallback-scrubbed-uduiqGPsXZdjLFAMP"},
+      "note": {"value": "-Fallback-scrubbed-NcSkTpnNVEQ"}, "custom": {}, "ApprovedForPayment":
+      {"value": true}, "BranchID": {"value": "-Fallback-scrubbed-EumWxqrhT"}, "CashAccount":
+      {"value": "10200"}, "CurrencyID": {"value": "USD"}, "Date": {"value": "2026-10-16"},
+      "Description": {"value": "-Fallback-scrubbed-HqTHqAhTFkbzUJQscLSPNEIC"}, "Details":
+      [{"note": {"value": "-Fallback-scrubbed-hPPIImsny"}, "custom": {}, "Account":
+      {"value": "62400"}, "Branch": {"value": "-Fallback-scrubbed-EumWxqrhT"}, "Description":
+      {"value": "-Fallback-scrubbed-loAMBpBiQ"}, "ExtendedCost": {"value": 40.0},
+      "InventoryID": {"value": "-Fallback-scrubbed-KvWDVEBzcG"}, "NonBillable": {"value":
+      false}, "Project": {"value": "X"}, "Qty": {"value": 2.0}, "Subaccount": {"value":
+      "000000"}, "TaxCategory": {"value": "-Fallback-scrubbed-QRseFQ"}, "TransactionDescription":
+      {"value": "-Fallback-scrubbed-ufSmYztGtnJOLUBjA"}, "UnitCost": {"value": 20.0},
+      "UOM": {"value": "-Fallback-scrubbed-li"}, "id": "3aa0c95e-bbcb-f111-bb84-0afff321670d"}],
+      "DueDate": {"value": "2026-11-15"}, "Hold": {"value": true}, "IsTaxValid": {"value":
+      false}, "LocationID": {"value": "-Fallback-scrubbed-pzsj"}, "PostPeriod": {"value":
+      "102026"}, "Project": {"value": "X"}, "Terms": {"value": "-Fallback-scrubbed-cCt"},
+      "Vendor": {"value": "-Fallback-scrubbed-yXoircaC"}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '1431'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.34.2
+    method: PATCH
+    uri: http://54.174.197.202/AcumaticaSandbox/entity/Default/26.200.001/Bill?%24expand=Details
+  response:
+    body:
+      string: '{"id": "38a0c95e-bbcb-f111-bb84-0afff321670d", "rowNumber": 1, "note":
+        {"value": "-Fallback-scrubbed-NcSkTpnNVEQ"}, "Amount": {"value": 140.0}, "ApprovedForPayment":
+        {"value": true}, "Balance": {"value": 140.0}, "BranchID": {"value": "-Fallback-scrubbed-EumWxqrhT"},
+        "CashAccount": {"value": "10200"}, "CurrencyID": {"value": "USD"}, "Date":
+        {"value": "2026-10-16"}, "Description": {"value": "-Fallback-scrubbed-HqTHqAhTFkbzUJQscLSPNEIC"},
+        "Details": [{"id": "3aa0c95e-bbcb-f111-bb84-0afff321670d", "rowNumber": 1,
+        "note": {"value": "-Fallback-scrubbed-hPPIImsny"}, "Account": {"value": "62400"},
+        "Amount": {"value": 40.0}, "Branch": {"value": "-Fallback-scrubbed-EumWxqrhT"},
+        "CalculateDiscountsOnImport": {}, "Description": {"value": "-Fallback-scrubbed-EcAjRHfOsOdHwk"},
+        "ExtendedCost": {"value": 40.0}, "InventoryID": {"value": "-Fallback-scrubbed-KvWDVEBzcG"},
+        "LCLineNbr": {}, "LCNbr": {}, "LCType": {}, "NonBillable": {"value": false},
+        "POLine": {}, "POOrderNbr": {}, "POOrderType": {}, "POReceiptLine": {}, "POReceiptNbr":
+        {}, "POReceiptType": {}, "Project": {"value": "X"}, "ProjectTask": {}, "Qty":
+        {"value": 2.0}, "Subaccount": {"value": "000000"}, "TaxCategory": {"value":
+        "-Fallback-scrubbed-QRseFQ"}, "TransactionDescription": {"value": "-Fallback-scrubbed-ufSmYztGtnJOLUBjA"},
+        "UnitCost": {"value": 20.0}, "UOM": {"value": "-Fallback-scrubbed-li"}, "custom":
+        {}, "_links": {"files:put": "-Fallback-scrubbed-rAGdFOwpxRHIexsfjLDtVuwcDxfdQNvIBCvTBsxBtkLePYgRXynBWaeYMvXhYTqslGudNSShxcieqvtSIfldpcNbqSBJQGhyyunzIUMPpjxZubwwwBigrkhaflZttaDAWMjsWpVMorf"}},
+        {"id": "a5cda9ff-afcc-f111-bb84-0afff321670d", "rowNumber": 2, "note": {"value":
+        ""}, "Account": {"value": "50000"}, "Amount": {"value": 100.0}, "Branch":
+        {"value": "-Fallback-scrubbed-EumWxqrhT"}, "CalculateDiscountsOnImport": {},
+        "Description": {"value": "-Fallback-scrubbed-txcXaRuBdFXvSdgA"}, "ExtendedCost":
+        {"value": 100.0}, "InventoryID": {}, "LCLineNbr": {}, "LCNbr": {}, "LCType":
+        {}, "NonBillable": {"value": false}, "POLine": {}, "POOrderNbr": {}, "POOrderType":
+        {}, "POReceiptLine": {}, "POReceiptNbr": {}, "POReceiptType": {}, "Project":
+        {"value": "-Fallback-scrubbed-rDqGSWBbE"}, "ProjectTask": {"value": "01"},
+        "Qty": {"value": 1.0}, "Subaccount": {"value": "000000"}, "TaxCategory": {},
+        "TransactionDescription": {"value": "-Fallback-scrubbed-rcFIZJvjSDApyRKW"},
+        "UnitCost": {"value": 100.0}, "UOM": {}, "custom": {}, "_links": {"files:put":
+        "-Fallback-scrubbed-FGPZndeHQGqqpbtsrWPzJXahyVPlhihBNScCpSRgNnKNZSAOvXgpXfKPLOsvjFmFnkKHkNAbJqEhJliEzhbywpjbquvoshUxBCiCkSyBHfcKOfnGHmUQbOjExsDmOBnTIWiKcVBCuNk"}}],
+        "DueDate": {"value": "2026-11-15"}, "Hold": {"value": true}, "IsTaxValid":
+        {"value": false}, "LastModifiedDateTime": {"value": "2026-10-20T20:08:25.887+00:00"},
+        "LocationID": {"value": "-Fallback-scrubbed-pzsj"}, "PostPeriod": {"value":
+        "102026"}, "Project": {}, "ReferenceNbr": {"value": "006577"}, "Status": {"value":
+        {"id": "H", "description": "-Fallback-scrubbed-mrmbqQD"}}, "TaxTotal": {"value":
+        0.0}, "Terms": {"value": "-Fallback-scrubbed-cCt"}, "Type": {"value": {"id":
+        "INV", "description": "Bill"}}, "Vendor": {"value": "-Fallback-scrubbed-yXoircaC"},
+        "VendorRef": {"value": "-Fallback-scrubbed-uduiqGPsXZdjLFAMP"}, "custom":
+        {}, "_links": {"files:put": "-Fallback-scrubbed-RCWwndofllOLqtnuCEOWSPQMoMbczHkQaxUkyCqZVVXDPTUwUbwKscJeQCEUngwRwdppLvMCIzDLyrCdWHEODfPVMBYOibafYgdQuldJkddnrvoxxJRCVLKVNBAhORTfbPFCPcJ",
+        "self": "-Fallback-scrubbed-oBqdesWwbRgZEjZSKYkGBBvXOXuexoAHAhjqqfNfRMaYvSbopMglJtWTJviERvvWYBsDunYRlDSIUtticqVFr"}}'
+    headers:
+      Cache-Control:
+      - private
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 20 Oct 2026 20:08:26 GMT
+      SessionId:
+      - a09cedc9-2c3b-4bc9-8564-8b33adbdabbc
+      Vary:
+      - Accept-Encoding
+      X-Robots-Tag:
+      - noindex
+      content-length:
+      - '2894'
+    status:
+      code: 200
+      message: OK
+version: 1

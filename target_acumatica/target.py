@@ -2,24 +2,27 @@
 
 from __future__ import annotations
 
+from functools import cached_property
+
 from hotglue_singer_sdk import typing as th
 from hotglue_singer_sdk.target_sdk.target import TargetHotglue
 from target_acumatica.auth import AcumaticaAuthenticator
-from target_acumatica.sinks import EntitySink
+from target_acumatica.client import fetch_endpoint_version
+from target_acumatica.sinks import BillSink, EntitySink
 
 
 class TargetAcumatica(TargetHotglue):
     """Load any writable top-level entity exposed by an Acumatica endpoint."""
 
     name = "target-acumatica"
-    SINK_TYPES = []
+    SINK_TYPES = [BillSink]
     MAX_PARALLELISM = 1
     default_sink_class = EntitySink
     config_jsonschema = th.PropertiesList(
         th.Property("instance_url", th.StringType),
         th.Property("api_url", th.StringType, description="Hotglue instance URL alias"),
         th.Property("endpoint_name", th.StringType, default="Default"),
-        th.Property("endpoint_version", th.StringType, default="24.200.001"),
+        th.Property("endpoint_version", th.StringType),
         th.Property("client_id", th.StringType),
         th.Property("client_secret", th.StringType),
         th.Property("refresh_token", th.StringType),
@@ -48,6 +51,18 @@ class TargetAcumatica(TargetHotglue):
             raise ValueError("Refreshing tokens requires client_id and client_secret")
         self.acumatica_authenticator = AcumaticaAuthenticator(
             self, {}, self.access_token_support(self)[1]
+        )
+
+    @cached_property
+    def endpoint_version(self):
+        """Use an explicit contract version or discover the newest published version once."""
+        configured = self.config.get("endpoint_version")
+        if configured:
+            return configured
+        return fetch_endpoint_version(
+            self.config["instance_url"],
+            self.config.get("endpoint_name", "Default"),
+            int(self.config.get("timeout", 60)),
         )
 
     @classmethod

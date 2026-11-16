@@ -4,7 +4,9 @@ from __future__ import annotations
 
 import copy
 import re
+from datetime import date, datetime
 from urllib.parse import urlsplit
+
 import requests
 from hotglue_etl_exceptions import InvalidCredentialsError, InvalidPayloadError
 from hotglue_singer_sdk.exceptions import FatalAPIError
@@ -18,6 +20,86 @@ def identifier(value: str) -> str:
     return value
 
 
+def json_compatible(value):
+    """Recursively restore JSON values parsed into Python date objects by the SDK."""
+    if isinstance(value, datetime):
+        if value.tzinfo is None and value.time() == datetime.min.time():
+            return value.date().isoformat()
+        return value.isoformat()
+    if isinstance(value, date):
+        return value.isoformat()
+    if isinstance(value, dict):
+        return {key: json_compatible(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [json_compatible(item) for item in value]
+    return value
+
+
+def version_key(version: str) -> tuple[int, ...]:
+    """Return a numeric key for Acumatica contract versions."""
+    return tuple(int(part) for part in version.split("."))
+
+
+def fetch_endpoint_version(instance_url: str, endpoint_name: str, timeout: int) -> str:
+    """Return the newest published version for an endpoint name."""
+    response = requests.get(f"{instance_url.rstrip('/')}/entity", timeout=timeout)
+    response.raise_for_status()
+    versions = [
+        item["version"]
+        for item in response.json().get("endpoints", [])
+        if item.get("name") == endpoint_name
+    ]
+    if not versions:
+        raise ValueError(f"Acumatica endpoint {endpoint_name!r} is not published")
+    return max(versions, key=version_key)
+
+
+def is_scalar_object(value: dict) -> bool:
+    """Return whether a mapping is already an Acumatica scalar value."""
+    return set(value) <= {"value", "error"} or (
+        set(value) <= {"id", "description"} and "id" in value
+    )
+
+
+def to_acumatica_field(value):
+    """Convert a plain Singer field to Acumatica's contract REST shape."""
+    if value is None:
+        return None
+    if isinstance(value, list):
+        converted = []
+        for item in value:
+            if isinstance(item, dict) and not is_scalar_object(item):
+                item = to_acumatica_entity(item)
+            else:
+                item = to_acumatica_field(item)
+            if item not in (None, {}):
+                converted.append(item)
+        return converted
+    if isinstance(value, dict) and set(value) <= {"value", "error"}:
+        if value.get("value") is None and "error" not in value:
+            return None
+        return json_compatible(value)
+    if isinstance(value, dict) and set(value) <= {"id", "description"} and "id" in value:
+        return {"value": json_compatible(value)}
+    if isinstance(value, dict):
+        return to_acumatica_entity(value)
+    return {"value": json_compatible(value)}
+
+
+def to_acumatica_entity(record: dict) -> dict:
+    """Accept both native Acumatica JSON and convenient plain Singer records."""
+    wrapped = {}
+    for key, value in record.items():
+        if key in {"id", "custom"}:
+            if value is not None:
+                wrapped[key] = json_compatible(value)
+            continue
+        converted = to_acumatica_field(value)
+        if converted is not None:
+            wrapped[key] = converted
+    return wrapped
+
+
 class AcumaticaRecordSink(HotglueSink):
     """Leave checkpointing, duplicate detection, and snapshots to the SDK."""
 
@@ -28,6 +110,7 @@ class AcumaticaRecordSink(HotglueSink):
         super().__init__(*args, **kwargs)
         self.processed_hashes = []
         self.previous_state = None
+        self._snapshot_id_injected = False
         self.http_headers = {"Accept": "application/json"}
         self.params = {}
         self.session = requests.Session()
@@ -36,7 +119,8 @@ class AcumaticaRecordSink(HotglueSink):
             raise ValueError("timeout must be positive")
         identifier(self.entity)
         identifier(self.config.get("endpoint_name", "Default"))
-        if not re.fullmatch(r"\d+\.\d+\.\d+", self.config.get("endpoint_version", "24.200.001")):
+        configured_version = self.config.get("endpoint_version")
+        if configured_version and not re.fullmatch(r"\d+\.\d+\.\d+", configured_version):
             raise ValueError("endpoint_version must have format 24.200.001")
         parsed = urlsplit(self.config["instance_url"])
         if (
@@ -67,7 +151,7 @@ class AcumaticaRecordSink(HotglueSink):
         return "{}/entity/{}/{}".format(
             self.config["instance_url"].rstrip("/"),
             identifier(self.config.get("endpoint_name", "Default")),
-            self.config.get("endpoint_version", "24.200.001"),
+            self._target.endpoint_version,
         )
 
     @property
@@ -112,6 +196,7 @@ class AcumaticaRecordSink(HotglueSink):
 
     def preprocess_record(self, record, context):
         payload = copy.deepcopy(record)
+        self._snapshot_id_injected = False
         # externalId is managed by Hotglue and never sent to Acumatica.
         external_id = context.get("acumatica_external_id")
         if external_id and not payload.get("id"):
@@ -123,7 +208,8 @@ class AcumaticaRecordSink(HotglueSink):
             ]
             if matches:
                 payload["id"] = matches[-1]["id"]
-        return payload
+                self._snapshot_id_injected = True
+        return to_acumatica_entity(payload)
 
     def process_record(self, record, context):
         context = dict(context)
@@ -133,15 +219,19 @@ class AcumaticaRecordSink(HotglueSink):
     def build_record_hash(self, record):
         # Snapshot IDs are transport metadata, not changes to the source payload.
         payload = dict(record)
-        if payload.get("externalId") or payload.get("externalid"):
+        if self._snapshot_id_injected:
             payload.pop("id", None)
+            self._snapshot_id_injected = False
         return super().build_record_hash(payload)
 
     def upsert_record(self, record, context):
-        response = self.request_api("PUT", self.endpoint, request_data=record)
+        method = "PATCH" if record.get("id") else "PUT"
+        expand = [name for name, value in record.items() if isinstance(value, list)]
+        params = {"$expand": ",".join(expand)} if expand else None
+        response = self.request_api(method, self.endpoint, params=params, request_data=record)
         result = response.json()
         if not isinstance(result, dict) or not result.get("id"):
             raise InvalidPayloadError(
                 "Acumatica returned no entity id; cannot acknowledge the write"
             )
-        return result["id"], True, {"is_updated": bool(record.get("id"))}
+        return result["id"], True, {"is_updated": method == "PATCH"}

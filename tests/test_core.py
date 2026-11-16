@@ -1,6 +1,7 @@
 """Exercise actual SDK processing, state, HTTP errors, and OAuth rotation."""
 
 import json
+from datetime import date, datetime, timezone
 from io import StringIO
 from unittest.mock import Mock
 
@@ -24,7 +25,11 @@ def response(code=200, body=None):
 def target(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
     instance = TargetAcumatica(
-        config={"instance_url": "https://acumatica.test", "access_token": "test"}
+        config={
+            "instance_url": "https://acumatica.test",
+            "endpoint_version": "24.200.001",
+            "access_token": "test",
+        }
     )
     instance.incremental_target_state_path = str(tmp_path / "state.json")
     yield instance
@@ -160,7 +165,66 @@ def test_actual_singer_listen(target, monkeypatch):
 def test_snapshot_identity_does_not_change_payload_hash(target):
     s = sink(target)
     record = {"externalId": "source-1", "VendorName": {"value": "Name"}}
-    assert s.build_record_hash(record) == s.build_record_hash({**record, "id": "snapshot-id"})
+    expected = s.build_record_hash(record)
+    s._snapshot_id_injected = True
+    assert expected == s.build_record_hash({**record, "id": "snapshot-id"})
+
+
+def test_sdk_date_values_are_json_serializable(target):
+    s = sink(target, "Bill")
+    s.session.request = Mock(return_value=response())
+    s.process_record(
+        {
+            "externalId": "bill-1",
+            "Date": {"value": date(2026, 10, 16)},
+            "custom": {
+                "timestamp": datetime(2026, 10, 16, 12, 30, tzinfo=timezone.utc),
+            },
+        },
+        {},
+    )
+    payload = s.session.request.call_args.kwargs["json"]
+    assert payload["Date"] == {"value": "2026-10-16"}
+    assert payload["custom"]["timestamp"] == "2026-10-16T12:30:00+00:00"
+
+
+def test_plain_records_are_wrapped_and_detail_collections_expand(target):
+    s = sink(target, "Bill")
+    s.session.request = Mock(return_value=response())
+    s.process_record(
+        {
+            "externalId": "bill-1",
+            "Vendor": "V001",
+            "Type": {"id": "INV", "description": "Bill"},
+            "Details": [{"Account": "6100", "ExtendedCost": 12.5}],
+        },
+        {},
+    )
+    args, kwargs = s.session.request.call_args
+    assert args[0] == "PUT"
+    assert kwargs["params"] == {"$expand": "Details"}
+    assert kwargs["json"]["Vendor"] == {"value": "V001"}
+    assert kwargs["json"]["Type"] == {"value": {"id": "INV", "description": "Bill"}}
+    assert kwargs["json"]["Details"][0]["Account"] == {"value": "6100"}
+
+
+def test_latest_endpoint_version_is_discovered_once(monkeypatch):
+    discovery = response(
+        body={
+            "endpoints": [
+                {"name": "Default", "version": "24.200.001"},
+                {"name": "Default", "version": "26.200.001"},
+                {"name": "Custom", "version": "99.999.999"},
+            ]
+        }
+    )
+    mock = Mock(return_value=discovery)
+    monkeypatch.setattr(requests, "get", mock)
+    t = TargetAcumatica(config={"instance_url": "https://acumatica.test", "access_token": "test"})
+    assert t.endpoint_version == "26.200.001"
+    assert t.endpoint_version == "26.200.001"
+    assert mock.call_count == 1
+    t._shutdown_requested.set()
 
 
 def test_hotglue_api_url_alias():

@@ -1,0 +1,9 @@
+{
+  "api_url": "https://example.com/Acumatica",
+  "endpoint_name": "Default",
+  "endpoint_version": "24.200.001",
+  "client_id": "REPLACE_ME",
+  "client_secret": "REPLACE_ME",
+  "refresh_token": "REPLACE_ME",
+  "timeout": 60
+}

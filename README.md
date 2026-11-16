@@ -1,80 +1,46 @@
 # target-acumatica
 
-`target-acumatica` is a Singer target for **Acumatica**, built with the [Hotglue Singer SDK](https://github.com/hotgluexyz/HotglueSingerSDK) (`TargetHotglue`, HTTP sinks, SDK authenticators).
+Acumatica contract REST target scaffolded with the Hotglue target cookiecutter and built on `TargetHotglue` / `HotglueSink` from Hotglue Singer SDK 1.0.53.
 
-This project was generated from the Hotglue target cookiecutter with:
-
-| Option | Value |
-|--------|--------|
-| `auth_method` | `OAuth2` |
-| `sinks` | `Fallback | record` |
-| `api_url` | required site URL; entity base is `{api_url}/entity/Default/{version}` |
-
-## Project layout
-
-| Path | Role |
-|------|------|
-| `target_acumatica/target.py` | `TargetAcumatica` — config schema, `SINK_TYPES`, optional `default_sink_class` and `access_token_support` |
-| `target_acumatica/client.py` | `AcumaticaSink` base class, `RecordSink` / `BatchSink` stubs, `authenticator` |
-| `target_acumatica/sinks.py` | Per-stream sink classes (`FallbackSink` or named `*Sink` classes) |
-| `target_acumatica/auth.py` | Present only when generated with **OAuth2** (removed by cookiecutter hook otherwise) |
-| `.secrets/config.json` | Sample config matching your `auth_method` |
+Each Singer stream names a writable top-level Acumatica entity, such as `Vendor`, `Bill`, `Customer`, or `StockItem`. The target sends native Acumatica JSON with `PUT /entity/{endpoint_name}/{endpoint_version}/{entity}`. Endpoint availability and required fields depend on the Acumatica instance and its customizations. Actions, attachments, and read-only inquiries are outside this target's write interface.
 
 ## Configuration
 
-Settings are defined in `config_jsonschema` on `TargetAcumatica` in `target_acumatica/target.py`.
-For this project (**OAuth2**), config includes: `api_url`, `client_id`, `client_secret`, `refresh_token`, and optional `access_token` / `expires_in`.
-
-Inspect the live schema:
-
-```bash
-target-acumatica --about
-target-acumatica --about --format=markdown
+```json
+{
+  "api_url": "https://example.com/Acumatica",
+  "endpoint_name": "Default",
+  "endpoint_version": "24.200.001",
+  "client_id": "your-client-id",
+  "client_secret": "your-client-secret",
+  "refresh_token": "your-refresh-token"
+}
 ```
 
-Local secrets: edit `.secrets/config.json` (shape matches `auth_method` above).
+`instance_url` is an alias for `api_url` and takes precedence. Optional settings: `token_url` (defaults to the instance's `/identity/connect/token`), `timeout` (seconds, default 60), `entity_mapping` (Singer stream → entity name), `branch`, and `business_date`. `access_token` can be used alone for short local tests. `expires_in` follows the SDK convention of an absolute Unix expiry, rather than a duration.
 
-## Authentication
+Use OAuth authorization code login with `api offline_access` and the registered redirect URI. A client ID and secret alone cannot authorize a user. Shared authentication across sinks prevents rotating the same refresh token concurrently. The SDK persists refreshed credentials locally or uses the Hotglue token service in hosted jobs. For local refresh, use a config file and set `_refresh_token_via_hg_api` to false.
 
-| `auth_method` | Implementation |
-|---------------|----------------|
-| **OAuth2** | `AcumaticaAuthenticator` in `auth.py`; `TargetAcumatica.access_token_support()` returns the authenticator class and `{api_url}/identity/connect/token`. |
-| **Bearer Token** | `BearerTokenAuthenticator` in `client.py` |
-| **Basic Auth** | `BasicAuthenticator` with `username` / `password` |
-| **API Key** | `ApiAuthenticator` with configurable header name/prefix |
+## Payloads and snapshots
 
-HTTP calls use `{api_url}/entity/Default/{version}`, where `version` is the newest `Default` contract published at `{api_url}/entity`.
-
-## Sinks
-
-Sinks are declared at scaffold time as `StreamName | record` or `StreamName | batch`, comma-separated.
-
-Generated with: `Fallback | record`
-**Fallback mode:** `FallbackSink` in `sinks.py` handles any stream dynamically (`name` / `endpoint` from `stream_name`). `target.py` sets `default_sink_class = FallbackSink` and leaves `SINK_TYPES` empty.
-
-Shared HTTP behavior lives in `client.py` (`AcumaticaRecordSink` / `AcumaticaBatchSink` as generated).
-
-## Usage
-
-```bash
-target-acumatica --version
-target-acumatica --help
-tap-smoke-test | target-acumatica --config /path/to/config.json
+```json
+{"type":"SCHEMA","stream":"Vendor","schema":{"type":"object","properties":{"externalId":{"type":"string"},"VendorID":{"type":"object"},"VendorName":{"type":"object"}}},"key_properties":["externalId"],"x-hotglue":{"target_state_fields":["VendorID"],"target_state_include_hash":true}}
+{"type":"RECORD","stream":"Vendor","record":{"externalId":"airbase-vendor-id","VendorID":{"value":"AB001"},"VendorName":{"value":"Example"}}}
 ```
 
-## Developer setup
+Declare every emitted top-level field in the Singer schema; the SDK needs those declarations even when `additionalProperties` is enabled. Scalars must use Acumatica's `{"value": ...}` representation. Nested entities and detail arrays remain native JSON. `externalId` belongs to Hotglue and is removed before HTTP requests. SDK snapshots retain destination IDs, source IDs, payload hashes, custom fields, errors, and success/update summaries. Subsequent changed records reuse the prior successful destination ID. Snapshot IDs do not change the source payload hash.
 
-Prerequisites: Python 3.10+, [uv](https://docs.astral.sh/uv/).
+Use stable Acumatica natural keys for first-write retries, including retries after an uncertain network response. Existing detail rows need their Acumatica row IDs to update them; replacing or deleting detail collections requires an explicit mapping. The target does not infer accounting actions or release documents. HTTP 429/5xx and transient network errors use SDK backoff; validation and auth failures become failed record bookmarks. Always inspect target state, since SDK record failures may be captured without a nonzero process exit.
 
-```bash
-uv sync
-uv run pytest
-uv run target-acumatica --help
-tox -e lint    # ruff check + format
+## Local use
+
+Python 3.10:
+
+```sh
+python -m pip install -e . pytest ruff
+pytest -q
+ruff check target_acumatica tests
+ target-acumatica --config /private/config.json < /private/input.singer > /private/target-state.json
 ```
 
-For implementation notes and conventions, see `AGENTS.md` (or `CLAUDE.md` if that was selected at generation).
-
-## References
-
-- [Hotglue Singer SDK](https://github.com/hotgluexyz/HotglueSingerSDK)
+Never commit credentials, OAuth callback URLs containing codes, or real input/state files. See the sibling `airbase-acumatica-etl` project for Airbase mapping.

@@ -22,7 +22,7 @@ jobs:
           python -m venv .venv
           source .venv/bin/activate
           pip install .
-          pip install "hotglue-smoke-test @ git+https://github.com/hotgluexyz/hotglue-smoke-test.git@feature/hgi-11126"
+          pip install "hotglue-smoke-test @ git+https://github.com/hotgluexyz/hotglue-smoke-test.git@main"
           deactivate
 
       - name: Setup and run tests

@@ -24,11 +24,11 @@ Use OAuth authorization code login with `api offline_access` and the registered 
 ## Payloads and snapshots
 
 ```json
-{"type":"SCHEMA","stream":"Vendor","schema":{"type":"object","additionalProperties":true},"key_properties":["externalId"],"x-hotglue":{"target_state_fields":["VendorID"],"target_state_include_hash":true}}
+{"type":"SCHEMA","stream":"Vendor","schema":{"type":"object","properties":{"externalId":{"type":"string"},"VendorID":{"type":"object"},"VendorName":{"type":"object"}}},"key_properties":["externalId"],"x-hotglue":{"target_state_fields":["VendorID"],"target_state_include_hash":true}}
 {"type":"RECORD","stream":"Vendor","record":{"externalId":"airbase-vendor-id","VendorID":{"value":"AB001"},"VendorName":{"value":"Example"}}}
 ```
 
-Scalars must use Acumatica's `{"value": ...}` representation. Nested entities and detail arrays remain native JSON. `externalId` belongs to Hotglue and is removed before HTTP requests. SDK snapshots retain destination IDs, source IDs, payload hashes, custom fields, errors, and success/update summaries. Subsequent changed records reuse the prior successful destination ID. Snapshot IDs do not change the source payload hash.
+Declare every emitted top-level field in the Singer schema; the SDK needs those declarations even when `additionalProperties` is enabled. Scalars must use Acumatica's `{"value": ...}` representation. Nested entities and detail arrays remain native JSON. `externalId` belongs to Hotglue and is removed before HTTP requests. SDK snapshots retain destination IDs, source IDs, payload hashes, custom fields, errors, and success/update summaries. Subsequent changed records reuse the prior successful destination ID. Snapshot IDs do not change the source payload hash.
 
 Use stable Acumatica natural keys for first-write retries, including retries after an uncertain network response. Existing detail rows need their Acumatica row IDs to update them; replacing or deleting detail collections requires an explicit mapping. The target does not infer accounting actions or release documents. HTTP 429/5xx and transient network errors use SDK backoff; validation and auth failures become failed record bookmarks. Always inspect target state, since SDK record failures may be captured without a nonzero process exit.
 
